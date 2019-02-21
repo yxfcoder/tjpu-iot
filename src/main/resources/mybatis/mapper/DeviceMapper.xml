@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tjpu.iot.dao.DeviceMapper">
+
+    <resultMap id="BaseResultMap" type="com.tjpu.iot.pojo.Device">
+        <id column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="DEVICE_NAME" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="DEVICE_MODEL" property="deviceModel" jdbcType="VARCHAR"/>
+        <result column="DEVICE_TYPE" property="deviceType" jdbcType="VARCHAR"/>
+        <result column="DEVICE_PROTOCOL" property="deviceProtocol" jdbcType="VARCHAR"/>
+        <result column="DEVICE_COMPANY" property="deviceCompany" jdbcType="VARCHAR"/>
+        <result column="DEVICE_RUN_STATE" property="deviceRunState" jdbcType="VARCHAR"/>
+        <result column="DEVICE_USER_ID" property="deviceUserId" jdbcType="VARCHAR"/>
+        <result column="DEVICE_LATITUDE" property="deviceLatitude" jdbcType="VARCHAR"/>
+        <result column="DEVICE_LONGITUDE" property="deviceLongitude" jdbcType="VARCHAR"/>
+        <result column="DEVICE_LOCAL" property="deviceLocal" jdbcType="VARCHAR"/>
+        <result column="DEVICE_STATE" property="deviceState" jdbcType="VARCHAR"/>
+        <result column="DEVICE_REMARK" property="deviceRemark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DEVICE_ID, DEVICE_NAME, DEVICE_MODEL, DEVICE_TYPE, DEVICE_PROTOCOL, DEVICE_COMPANY,
+        DEVICE_RUN_STATE, DEVICE_USER_ID, DEVICE_LATITUDE, DEVICE_LONGITUDE, DEVICE_LOCAL,
+        DEVICE_STATE, DEVICE_REMARK
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.tjpu.iot.pojo.Device">
+        insert into DM_DEVICE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">
+                DEVICE_ID,
+            </if>
+            <if test="deviceName != null">
+                DEVICE_NAME,
+            </if>
+            <if test="deviceModel != null">
+                DEVICE_MODEL,
+            </if>
+            <if test="deviceType != null">
+                DEVICE_TYPE,
+            </if>
+            <if test="deviceProtocol != null">
+                DEVICE_PROTOCOL,
+            </if>
+            <if test="deviceCompany != null">
+                DEVICE_COMPANY,
+            </if>
+            <if test="deviceRunState != null">
+                DEVICE_RUN_STATE,
+            </if>
+            <if test="deviceUserId != null">
+                DEVICE_USER_ID,
+            </if>
+            <if test="deviceLatitude != null">
+                DEVICE_LATITUDE,
+            </if>
+            <if test="deviceLongitude != null">
+                DEVICE_LONGITUDE,
+            </if>
+            <if test="deviceLocal != null">
+                DEVICE_LOCAL,
+            </if>
+            <if test="deviceState != null">
+                DEVICE_STATE,
+            </if>
+            <if test="deviceRemark != null">
+                DEVICE_REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceModel != null">
+                #{deviceModel,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceProtocol != null">
+                #{deviceProtocol,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceCompany != null">
+                #{deviceCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceRunState != null">
+                #{deviceRunState,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceUserId != null">
+                #{deviceUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceLatitude != null">
+                #{deviceLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceLongitude != null">
+                #{deviceLongitude,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceLocal != null">
+                #{deviceLocal,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceState != null">
+                #{deviceState,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceRemark != null">
+                #{deviceRemark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from DM_DEVICE
+        where DEVICE_ID = #{deviceId,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.tjpu.iot.pojo.Device">
+        update DM_DEVICE
+        <set>
+            <if test="deviceName != null">
+                DEVICE_NAME = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceModel != null">
+                DEVICE_MODEL = #{deviceModel,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceProtocol != null">
+                DEVICE_PROTOCOL = #{deviceProtocol,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceCompany != null">
+                DEVICE_COMPANY = #{deviceCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceRunState != null">
+                DEVICE_RUN_STATE = #{deviceRunState,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceUserId != null">
+                DEVICE_USER_ID = #{deviceUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceLatitude != null">
+                DEVICE_LATITUDE = #{deviceLatitude,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceLongitude != null">
+                DEVICE_LONGITUDE = #{deviceLongitude,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceLocal != null">
+                DEVICE_LOCAL = #{deviceLocal,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceState != null">
+                DEVICE_STATE = #{deviceState,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceRemark != null">
+                DEVICE_REMARK = #{deviceRemark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DEVICE_ID = #{deviceId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from DM_DEVICE
+        where DEVICE_ID = #{deviceId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryAllDevice" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DM_DEVICE
+        order by DEVICE_ID
+    </select>
+</mapper>

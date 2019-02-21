@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tjpu.iot.dao.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.tjpu.iot.pojo.User">
+        <id column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="USER_MOBILE" property="userMobile" jdbcType="VARCHAR"/>
+        <result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="USER_COMPANY" property="userCompany" jdbcType="VARCHAR"/>
+        <result column="USER_LOCAL" property="userLocal" jdbcType="VARCHAR"/>
+        <result column="USER_STATE" property="userState" jdbcType="INTEGER"/>
+        <result column="USER_PERMISSION" property="userPermission" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, USER_MOBILE, USER_PASSWORD, USER_NAME, USER_COMPANY, USER_LOCAL, USER_STATE,
+        USER_PERMISSION
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.tjpu.iot.pojo.User">
+        insert into SM_USER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="userMobile != null">
+                USER_MOBILE,
+            </if>
+            <if test="userPassword != null">
+                USER_PASSWORD,
+            </if>
+            <if test="userName != null">
+                USER_NAME,
+            </if>
+            <if test="userCompany != null">
+                USER_COMPANY,
+            </if>
+            <if test="userLocal != null">
+                USER_LOCAL,
+            </if>
+            <if test="userState != null">
+                USER_STATE,
+            </if>
+            <if test="userPermission != null">
+                USER_PERMISSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userMobile != null">
+                #{userMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompany != null">
+                #{userCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="userLocal != null">
+                #{userLocal,jdbcType=VARCHAR},
+            </if>
+            <if test="userState != null">
+                #{userState,jdbcType=INTEGER},
+            </if>
+            <if test="userPermission != null">
+                #{userPermission,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from SM_USER
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.tjpu.iot.pojo.User">
+        update SM_USER
+        <set>
+            <if test="userMobile != null">
+                USER_MOBILE = #{userMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                USER_NAME = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userCompany != null">
+                USER_COMPANY = #{userCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="userLocal != null">
+                USER_LOCAL = #{userLocal,jdbcType=VARCHAR},
+            </if>
+            <if test="userState != null">
+                USER_STATE = #{userState,jdbcType=INTEGER},
+            </if>
+            <if test="userPermission != null">
+                USER_PERMISSION = #{userPermission,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from SM_USER
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from SM_USER
+        where USER_MOBILE = #{userMobile,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SM_USER
+        order by USER_ID
+    </select>
+</mapper>
