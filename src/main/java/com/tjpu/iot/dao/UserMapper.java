@@ -14,6 +14,10 @@ public interface UserMapper {
 
     int updateByPrimaryKeySelective(User user);
 
+    int updateStateOn(String userId);
+
+    int updateStateOff(String userId);
+
     User selectByPrimaryKey(String userId);
 
     User selectByMobile(String userMobile);

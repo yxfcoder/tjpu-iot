@@ -25,7 +25,7 @@
     </sql>
 
     <insert id="insertSelective" parameterType="com.tjpu.iot.pojo.Device">
-        insert into DM_DEVICE
+        insert into DEVICE
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deviceId != null">
                 DEVICE_ID,
@@ -111,12 +111,12 @@
     </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from DM_DEVICE
+        delete from DEVICE
         where DEVICE_ID = #{deviceId,jdbcType=VARCHAR}
     </delete>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.tjpu.iot.pojo.Device">
-        update DM_DEVICE
+        update DEVICE
         <set>
             <if test="deviceName != null">
                 DEVICE_NAME = #{deviceName,jdbcType=VARCHAR},
@@ -161,14 +161,14 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
-        from DM_DEVICE
+        from DEVICE
         where DEVICE_ID = #{deviceId,jdbcType=VARCHAR}
     </select>
 
     <select id="queryAllDevice" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from DM_DEVICE
+        from DEVICE
         order by DEVICE_ID
     </select>
 </mapper>

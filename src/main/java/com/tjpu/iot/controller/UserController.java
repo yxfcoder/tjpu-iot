@@ -46,9 +46,15 @@ public class UserController {
         return userService.queryAllUsers();
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public ResponseResult login(UserLoginDto userLoginDto) {
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ResponseResult login(@RequestBody UserLoginDto userLoginDto) {
         log.info("[UserController] login() 进入用户登陆方法");
         return userService.userLogin(userLoginDto);
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.PUT)
+    public ResponseResult logout(String userId) {
+        log.info("[UserController] logout() 进入用户注销方法");
+        return userService.userLogout(userId);
     }
 }

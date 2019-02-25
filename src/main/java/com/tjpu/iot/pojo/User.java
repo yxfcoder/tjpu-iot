@@ -1,26 +1,37 @@
 package com.tjpu.iot.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+
 public class User {
+
+    /** 用户编号 */
     private String userId;
 
+    /** 用户手机号 */
     private String userMobile;
 
+    /** 用户密码 */
+    @JsonProperty(access = WRITE_ONLY)
     private String userPassword;
 
+    /** 用户姓名 */
     private String userName;
 
+    /** 用户所在公司 */
     private String userCompany;
 
+    /** 用户所在区域 */
     private String userLocal;
 
-    private Integer userState;
+    /** 用户状态 0离线 1在线 */
+    private String userState;
 
+    /** 用户权限 */
     private String userPermission;
 
-    public User() {
-    }
-
-    public User(String userId, String userMobile, String userPassword, String userName, String userCompany, String userLocal, Integer userState, String userPermission) {
+    public User(String userId, String userMobile, String userPassword, String userName, String userCompany, String userLocal, String userState, String userPermission) {
         this.userId = userId;
         this.userMobile = userMobile;
         this.userPassword = userPassword;
@@ -79,11 +90,11 @@ public class User {
         this.userLocal = userLocal == null ? null : userLocal.trim();
     }
 
-    public Integer getUserState() {
+    public String getUserState() {
         return userState;
     }
 
-    public void setUserState(Integer userState) {
+    public void setUserState(String userState) {
         this.userState = userState;
     }
 
@@ -100,7 +111,6 @@ public class User {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", userMobile='" + userMobile + '\'' +
-                ", userPassword='" + userPassword + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userCompany='" + userCompany + '\'' +
                 ", userLocal='" + userLocal + '\'' +
