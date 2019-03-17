@@ -1,10 +1,3 @@
-/**
- * Project Name: tjpu-iot
- * File Name: WebSocketServer
- * Package Name: com.tjpu.iot.websocket
- * Date: 2019-02-25 23:36
- * Copyright (c) 2019, Wang, Haoyue All Rights Reserved.
- */
 package com.tjpu.iot.websocket;
 
 import com.tjpu.iot.util.WebSocketUtil;
@@ -15,15 +8,6 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-/**
- * ClassName: WebSocketServer
- * Description: TODO
- * Date: 2019-02-25 23:36
- *
- * @author Wang, Haoyue
- * @version V1.0
- * @since JDK 1.8
- */
 @Slf4j
 @ServerEndpoint(value = "/ws/{userId}")
 @Component
