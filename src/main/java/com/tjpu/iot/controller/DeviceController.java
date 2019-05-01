@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @RestController
 @RequestMapping("/tjpu/iot/device/")
@@ -16,9 +18,9 @@ public class DeviceController {
     private DeviceService deviceService;
 
     @RequestMapping(value = "device", method = RequestMethod.POST)
-    public ResponseResult add(@RequestBody Device device) {
+    public ResponseResult add(@RequestBody Device device, HttpSession session) {
         log.info("[DeviceController] add() 进入添加设备方法");
-        return deviceService.addDevice(device);
+        return deviceService.addDevice(device, session);
     }
 
     @RequestMapping(value = "{deviceId}", method = RequestMethod.DELETE)
@@ -43,5 +45,11 @@ public class DeviceController {
     public ResponseResult queryAll() {
         log.info("[DeviceController] queryAll() 进入查询所有设备方法");
         return deviceService.queryAllDevices();
+    }
+
+    @RequestMapping(value = "log", method = RequestMethod.GET)
+    public ResponseResult getDevicesLogs(String year, String month, String day, HttpSession session) {
+        log.info("[DeviceController] getDevicesLogs() 进入获取设备日志方法");
+        return deviceService.getDevicesLogs(year, month, day, session);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -124,7 +125,7 @@ public class UserService {
      * @param userLoginDto
      * @return
      */
-    public ResponseResult userLogin(UserLoginDto userLoginDto) {
+    public ResponseResult userLogin(UserLoginDto userLoginDto, HttpSession session) {
         log.info("[UserServiceImpl] userLogin() 进入用户登陆方法");
         if (userLoginDto == null) {
             log.info("[UserServiceImpl] userLogin() 参数为空，不能登陆");
@@ -154,6 +155,7 @@ public class UserService {
         userMapper.updateStateOn(user.getUserId());
         user.setUserState("在线");
         log.info("[UserServiceImpl] userLogin() 登陆成功");
+        session.setAttribute(session.getId(), user.getUserId());
         return new ResponseResult(user, true, "登陆成功", StatusCode.SUCCESS_GET);
     }
 

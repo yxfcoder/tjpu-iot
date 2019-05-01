@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @RestController
 @RequestMapping("/tjpu/iot/user/")
@@ -47,9 +49,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ResponseResult login(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseResult login(@RequestBody UserLoginDto userLoginDto, HttpSession session) {
         log.info("[UserController] login() 进入用户登陆方法");
-        return userService.userLogin(userLoginDto);
+        return userService.userLogin(userLoginDto, session);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.PUT)

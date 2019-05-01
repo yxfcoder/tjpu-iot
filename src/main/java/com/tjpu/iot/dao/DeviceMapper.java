@@ -20,4 +20,6 @@ public interface DeviceMapper {
     Device selectByPrimaryKey(String deviceId);
 
     List<Device> queryAllDevice();
+
+    List<Device> queryByUserId(String userId);
 }
