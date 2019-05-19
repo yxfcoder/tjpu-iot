@@ -1,6 +1,6 @@
 package com.tjpu.iot.common;
 
-import com.tjpu.iot.dto.PageResultDto;
+import com.tjpu.iot.dto.RestDeviceStatusDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +10,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class RestResult {
+public class RestDeviceStatusResult {
 
     private Integer code;
 
     private String msg;
 
-    private PageResultDto data;
+    private RestDeviceStatusDto data;
 }

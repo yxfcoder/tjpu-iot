@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @JsonSerialize
 public class ResponseResult implements Serializable {
+
     /** 返回的数据 */
     private Object data;
 

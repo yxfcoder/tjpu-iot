@@ -1,5 +1,6 @@
 package com.tjpu.iot.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DeviceDataDto {
+public class RestDeviceStatusDetailsDto {
 
-    private String temperature;
+    @JsonProperty("ONLINE")
+    private Integer online;
 }

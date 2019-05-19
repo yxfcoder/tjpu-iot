@@ -13,23 +13,25 @@ import java.util.Date;
 @ToString
 public class DeviceLogDto {
 
-    private String id;
+    private String requestId;
+
+    private String companyId;
+
+    private String appId;
 
     private String deviceId;
 
-    private String deviceType;
+    private String gatewayId;
 
-    private String serviceType;
+    private DeviceServiceDto service;
+
+    private String logType;
 
     private String serviceId;
 
-    private DeviceDataDto data;
+    private String serviceType;
 
     private String electricity;
 
     private Date eventTime;
-
-    private String serviceInfo;
-
-    private String log_type;
 }

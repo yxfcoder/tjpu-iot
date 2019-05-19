@@ -1,6 +1,7 @@
 package com.tjpu.iot.common;
 
 public class StatusCode {
+
     /** 操作成功*/
     public static final Integer OPERATIONSUCCESS = 200;
 

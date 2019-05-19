@@ -7,11 +7,6 @@ public class TJPUUtil {
         return String.valueOf((float) electricityBound / 10000);
     }
 
-    public static void main(String[] args) {
-        String electricityHex = "01030200023985";
-        System.out.println(electricityConvert(electricityHex));
-    }
-
     public static int parseHex4(String num) {
         if (num.length() != 4) {
             throw new NumberFormatException("Wrong length: " + num.length() + ", must be 4.");

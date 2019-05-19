@@ -1,9 +1,6 @@
 package com.tjpu.iot.service;
 
-import com.tjpu.iot.common.ResponseResult;
-import com.tjpu.iot.common.RestResult;
-import com.tjpu.iot.common.StatusCode;
-import com.tjpu.iot.common.TJPUCommon;
+import com.tjpu.iot.common.*;
 import com.tjpu.iot.dao.DeviceMapper;
 import com.tjpu.iot.dao.UserMapper;
 import com.tjpu.iot.dto.DeviceLogDto;
@@ -22,7 +19,10 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 @Slf4j
 @Service
@@ -34,6 +34,13 @@ public class DeviceService {
     @Resource
     private UserMapper userMapper;
 
+    /**
+     * addDevice: 添加设备
+     *
+     * @param device
+     * @param session
+     * @return
+     */
     public ResponseResult addDevice(Device device, HttpSession session) {
         log.info("[DeviceService] addDevice() 进入添加设备方法");
         String userId = (String) session.getAttribute(session.getId());
@@ -60,6 +67,12 @@ public class DeviceService {
         }
     }
 
+    /**
+     * deleteDevice: 删除设备
+     *
+     * @param deviceId
+     * @return
+     */
     public ResponseResult deleteDevice(String deviceId) {
         log.info("[DeviceService] deleteDevice() 进入删除设备方法");
         if (StringUtils.isBlank(deviceId)) {
@@ -75,6 +88,12 @@ public class DeviceService {
         return new ResponseResult(true, "删除设备成功", StatusCode.SUCCESS_DELETE);
     }
 
+    /**
+     * updateDevice: 更新设备信息
+     *
+     * @param device
+     * @return
+     */
     public ResponseResult updateDevice(Device device) {
         log.info("[DeviceService] updateDevice() 进入更新设备方法");
         if (device == null) {
@@ -89,6 +108,12 @@ public class DeviceService {
         return new ResponseResult(true, "更新设备成功", StatusCode.SUCCESS_POST_PUT_PATCH);
     }
 
+    /**
+     * queryDevice: 查询指定设备
+     *
+     * @param deviceId
+     * @return
+     */
     public ResponseResult queryDevice(String deviceId) {
         log.info("[DeviceService] queryDevice() 进入查询设备方法");
         if (StringUtils.isBlank(deviceId)) {
@@ -104,6 +129,11 @@ public class DeviceService {
         return new ResponseResult(device, true, "查询设备成功", StatusCode.SUCCESS_GET);
     }
 
+    /**
+     * queryAllDevices: 查询所有设备
+     *
+     * @return
+     */
     public ResponseResult queryAllDevices() {
         log.info("[DeviceService] queryAllDevices() 进入查询所有设备方法");
         List<Device> deviceList = deviceMapper.queryAllDevice();
@@ -115,6 +145,15 @@ public class DeviceService {
         return new ResponseResult(deviceList, true, "查询设备成功", StatusCode.SUCCESS_GET);
     }
 
+    /**
+     * getDevicesLogs: 查询设备日志
+     *
+     * @param year
+     * @param month
+     * @param day
+     * @param session
+     * @return
+     */
     public ResponseResult getDevicesLogs(String year, String month, String day, HttpSession session) {
         log.info("[DeviceService] getDevicesLogs() 进入获取设备日志方法");
         String userId = (String) session.getAttribute(session.getId());
@@ -129,13 +168,91 @@ public class DeviceService {
         deviceList.forEach(device -> {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
-            headers.add("api_key", TJPUCommon.KEY);
+            headers.add("apiKey", TJPUCommon.KEY);
             HttpEntity<String> entity = new HttpEntity<>(null, headers);
-            ResponseEntity<RestResult> result = restTemplate.exchange("https://tjiot.net/EDoctor/api/v1/device/log/listDatedDeviceLogById?device_id=" + device.getDeviceId() + "&year=" + year + "&month=" + month + "&day=" + day,
-                    HttpMethod.GET, entity, RestResult.class);
-            result.getBody().getData().forEach(deviceLogDto -> deviceLogDtoList.add(deviceLogDto));
+            ResponseEntity<RestResult> result = restTemplate.
+                    exchange("https://tjiot.net/EDoctor/api/v1/device/log/listPagedDatedDeviceLogById?device_id="
+                                    + device.getDeviceId()
+                                    + "&year=" + year +
+                                    "&month=" + month +
+                                    "&day=" + day +
+                                    "&pageNum=1&pageSize=1000000000000",
+                            HttpMethod.GET, entity, RestResult.class);
+            result.getBody().getData().getData().forEach(deviceLogDto -> deviceLogDtoList.add(deviceLogDto));
         });
-        deviceLogDtoList.forEach(deviceLogDto -> deviceLogDto.setElectricity(deviceLogDto.getData().getTemperature()));
+        deviceLogDtoList.removeIf(deviceLogDto -> !Optional.ofNullable(deviceLogDto.getService().getData().getTemperature()).isPresent());
+        deviceLogDtoList.forEach(deviceLogDto -> {
+            deviceLogDto.setServiceId(deviceLogDto.getService().getServiceId());
+            deviceLogDto.setServiceType(deviceLogDto.getService().getServiceType());
+            deviceLogDto.setElectricity(deviceLogDto.getService().getData().getTemperature());
+            deviceLogDto.setEventTime(deviceLogDto.getService().getEventTime());
+        });
+        log.info("[DeviceService] getDevicesLogs() 获取设备日志成功");
         return new ResponseResult(deviceLogDtoList, true, "获取设备日志成功", StatusCode.SUCCESS_GET);
+    }
+
+    public ResponseResult getDevicesStatus(HttpSession session) {
+        log.info("[DeviceService] getDevicesStatus() 进入获取设备状态方法");
+        String userId = (String) session.getAttribute(session.getId());
+        if (StringUtils.isBlank(userId)) {
+            return new ResponseResult(false, "用户未登录", StatusCode.ERROR_UNAUTHORIZED);
+        }
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            return new ResponseResult(false, "没有找到用户", StatusCode.ERROR_INTERNAL_SERVER_ERROR);
+        }
+        List<Integer> list = new ArrayList();
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("apiKey", TJPUCommon.KEY);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        ResponseEntity<RestDeviceStatusResult> result = restTemplate.
+                exchange("https://tjiot.net/EDoctor/api/v1/Device/operation/getDeviceStatusAndStatusDetailStatistics?companyId="
+                                + user.getUserCompanyId(), HttpMethod.GET, entity, RestDeviceStatusResult.class);
+        if (result.getBody().getData().getStatus().getOnline() == null) {
+            list.add(0);
+            list.add(0);
+            list.add(0);
+            list.add(0);
+        }
+        list.add(result.getBody().getData().getStatus().getOnline());
+        list.add(0);
+        list.add(0);
+        list.add(0);
+        log.info("[DeviceService] getDevicesStatus() 获取设备状态成功");
+        return new ResponseResult(list, true, "获取设备状态成功", StatusCode.SUCCESS_GET);
+    }
+
+    public ResponseResult getDevicesDownTimes(HttpSession session) {
+        log.info("[DeviceService] getDevicesLogs() 进入获取设备日志方法");
+        String userId = (String) session.getAttribute(session.getId());
+        if (StringUtils.isBlank(userId)) {
+            return new ResponseResult(false, "用户未登录", StatusCode.ERROR_UNAUTHORIZED);
+        }
+        List<Device> deviceList = deviceMapper.queryByUserId(userId);
+        if (deviceList.size() == 0) {
+            return new ResponseResult(false, "用户没有设备", StatusCode.OPERATIONERROR);
+        }
+        List<DeviceLogDto> deviceLogDtoList = new ArrayList<>();
+        deviceList.forEach(device -> {
+            for (int i = 0; i < 31; i++) {
+                RestTemplate restTemplate = new RestTemplate();
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("api 8Key", TJPUCommon.KEY);
+                HttpEntity<String> entity = new HttpEntity<>(null, headers);
+                ResponseEntity<RestResult> result = restTemplate.
+                exchange("https://tjiot.net/EDoctor/api/v1/device/log/listPagedDatedDeviceLogById?device_id="
+                                + device.getDeviceId()
+                                + "&year=" + "2019" +
+                                "&month=" + "05" +
+                                "&day=" + i +
+                                "&pageNum=1&pageSize=1000000000000",
+                        HttpMethod.GET, entity, RestResult.class);
+                result.getBody().getData().getData().forEach(deviceLogDto -> deviceLogDtoList.add(deviceLogDto));
+            }
+        });
+        deviceLogDtoList.removeIf(deviceLogDto -> !Optional.ofNullable(deviceLogDto.getService().getData().getTemperature()).isPresent());
+        deviceLogDtoList.removeIf(deviceLogDto -> !deviceLogDto.getService().getData().getTemperature().equals(0));
+        return new ResponseResult(deviceLogDtoList.size(), true, "获取设备停机次数成功", StatusCode.SUCCESS_GET);
     }
 }

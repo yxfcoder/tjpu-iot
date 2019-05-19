@@ -9,7 +9,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DeviceDataDto {
+public class DeviceStatusDto {
 
-    private String temperature;
+    private Integer online;
+
+    private Integer offline;
+
+    private Integer load;
+
+    private Integer trouble;
 }

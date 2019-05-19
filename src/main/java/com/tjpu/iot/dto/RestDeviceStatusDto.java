@@ -9,7 +9,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DeviceDataDto {
+public class RestDeviceStatusDto {
 
-    private String temperature;
+    private RestDeviceStatusDetailsDto status;
+//    private Object status;
+
+    private Object statusDetail;
 }

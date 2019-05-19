@@ -5,11 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DeviceDataDto {
+public class DeviceServiceDto {
 
-    private String temperature;
+    private String serviceId;
+
+    private String serviceType;
+
+    private DeviceDataDto data;
+
+    private Date eventTime;
 }

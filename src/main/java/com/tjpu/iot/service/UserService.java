@@ -24,6 +24,7 @@ public class UserService {
 
     /**
      * addUser: 添加用户
+     *
      * @param user
      * @return
      */
@@ -48,6 +49,7 @@ public class UserService {
 
     /**
      * deleteUser: 删除用户
+     *
      * @param userId
      * @return
      */
@@ -68,6 +70,7 @@ public class UserService {
 
     /**
      * updateUser: 更新用户
+     *
      * @param user
      * @return
      */
@@ -86,7 +89,8 @@ public class UserService {
     }
 
     /**
-     * queryUser: 查询用户
+     * queryUser: 查询指定用户
+     *
      * @param userId
      * @return
      */
@@ -107,6 +111,7 @@ public class UserService {
 
     /**
      * queryAllUsers: 查询所有用户
+     *
      * @return
      */
     public ResponseResult queryAllUsers() {
@@ -122,6 +127,7 @@ public class UserService {
 
     /**
      * userLogin: 用户登录
+     *
      * @param userLoginDto
      * @return
      */
@@ -161,6 +167,7 @@ public class UserService {
 
     /**
      * userLogout: 用户注销
+     *
      * @param userId
      * @return
      */
