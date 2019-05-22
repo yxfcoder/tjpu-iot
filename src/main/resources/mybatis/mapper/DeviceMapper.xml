@@ -171,4 +171,11 @@
         from DEVICE
         order by DEVICE_ID
     </select>
+
+    <select id="queryByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from device
+        where DEVICE_USER_ID = #{userId,jdbcType=VARCHAR};
+    </select>
 </mapper>

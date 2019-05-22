@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -23,6 +24,7 @@ public class UserService {
 
     /**
      * addUser: 添加用户
+     *
      * @param user
      * @return
      */
@@ -47,6 +49,7 @@ public class UserService {
 
     /**
      * deleteUser: 删除用户
+     *
      * @param userId
      * @return
      */
@@ -67,6 +70,7 @@ public class UserService {
 
     /**
      * updateUser: 更新用户
+     *
      * @param user
      * @return
      */
@@ -85,7 +89,8 @@ public class UserService {
     }
 
     /**
-     * queryUser: 查询用户
+     * queryUser: 查询指定用户
+     *
      * @param userId
      * @return
      */
@@ -106,6 +111,7 @@ public class UserService {
 
     /**
      * queryAllUsers: 查询所有用户
+     *
      * @return
      */
     public ResponseResult queryAllUsers() {
@@ -121,10 +127,11 @@ public class UserService {
 
     /**
      * userLogin: 用户登录
+     *
      * @param userLoginDto
      * @return
      */
-    public ResponseResult userLogin(UserLoginDto userLoginDto) {
+    public ResponseResult userLogin(UserLoginDto userLoginDto, HttpSession session) {
         log.info("[UserServiceImpl] userLogin() 进入用户登陆方法");
         if (userLoginDto == null) {
             log.info("[UserServiceImpl] userLogin() 参数为空，不能登陆");
@@ -154,11 +161,13 @@ public class UserService {
         userMapper.updateStateOn(user.getUserId());
         user.setUserState("在线");
         log.info("[UserServiceImpl] userLogin() 登陆成功");
+        session.setAttribute(session.getId(), user.getUserId());
         return new ResponseResult(user, true, "登陆成功", StatusCode.SUCCESS_GET);
     }
 
     /**
      * userLogout: 用户注销
+     *
      * @param userId
      * @return
      */

@@ -8,13 +8,14 @@
         <result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR"/>
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
         <result column="USER_COMPANY" property="userCompany" jdbcType="VARCHAR"/>
+        <result column="USER_COMPANY_ID" property="userCompanyId" jdbcType="VARCHAR"/>
         <result column="USER_LOCAL" property="userLocal" jdbcType="VARCHAR"/>
         <result column="USER_STATE" property="userState" jdbcType="VARCHAR"/>
         <result column="USER_PERMISSION" property="userPermission" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        USER_ID, USER_MOBILE, USER_PASSWORD, USER_NAME, USER_COMPANY, USER_LOCAL, USER_STATE,
+        USER_ID, USER_MOBILE, USER_PASSWORD, USER_NAME, USER_COMPANY, USER_COMPANY_ID, USER_LOCAL, USER_STATE,
         USER_PERMISSION
     </sql>
 
