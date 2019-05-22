@@ -2,6 +2,8 @@ package com.tjpu.iot.util;
 
 import com.tjpu.iot.pojo.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,8 +30,18 @@ public class DateUtil {
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
         long diff = end.getTime() - start.getTime();
-        long min = diff & nd & nh / nm;
+        long min = diff % nd % nh / nm;
         return min;
+    }
+
+    public static Date stringToDate(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String[] args) {

@@ -21,4 +21,10 @@ public class Data {
     private Integer downTimes;
 
     private String downTime;
+
+    private String timeOEE;
+
+    private String performanceOEE;
+
+    private String goodOEE;
 }

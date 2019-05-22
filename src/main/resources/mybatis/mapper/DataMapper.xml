@@ -9,10 +9,13 @@
         <result column="MONTH" property="month" jdbcType="VARCHAR"/>
         <result column="DEVICE_DOWN_TIMES" property="downTimes" jdbcType="INTEGER"/>
         <result column="DOWN_TIME" property="downTime" jdbcType="VARCHAR"/>
+        <result column="TIME_OEE" property="timeOEE" jdbcType="VARCHAR"/>
+        <result column="PERFORMANCE_OEE" property="performanceOEE" jdbcType="VARCHAR"/>
+        <result column="GOOD_OEE" property="goodOEE" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        DATA_ID, DATA_DEVICE_ID, YEAR, MONTH, DEVICE_DOWN_TIMES, DOWN_TIME
+        DATA_ID, DATA_DEVICE_ID, YEAR, MONTH, DEVICE_DOWN_TIMES, DOWN_TIME, TIME_OEE, PERFORMANCE_OEE, GOOD_OEE
     </sql>
 
     <insert id="insertSelective" parameterType="com.tjpu.iot.pojo.Data">
@@ -36,6 +39,15 @@
             <if test="downTime != null">
                 DOWN_TIME,
             </if>
+            <if test="timeOEE != null">
+                TIME_OEE,
+            </if>
+            <if test="performanceOEE != null">
+                PERFORMANCE_OEE,
+            </if>
+            <if test="goodOEE != null">
+                GOOD_OEE,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="dataId != null">
@@ -56,6 +68,15 @@
             <if test="downTime != null">
                 #{downTime,jdbcType=VARCHAR},
             </if>
+            <if test="timeOEE != null">
+                #{timeOEE,jdbcType=VARCHAR},
+            </if>
+            <if test="performanceOEE != null">
+                #{performanceOEE,jdbcType=VARCHAR},
+            </if>
+            <if test="goodOEE != null">
+                #{goodOEE,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -74,6 +95,15 @@
             <if test="downTime != null">
                 DOWN_TIME = #{downTime,jdbcType=VARCHAR},
             </if>
+            <if test="timeOEE != null">
+                TIME_OEE = #{timeOEE,jdbcType=VARCHAR},
+            </if>
+            <if test="performanceOEE != null">
+                PERFORMANCE_OEE = #{performanceOEE,jdbcType=VARCHAR},
+            </if>
+            <if test="goodOEE != null">
+                GOOD_OEE = #{goodOEE,jdbcType=VARCHAR},
+            </if>
         </set>
         where DATA_ID = #{dataId,jdbcType=BIGINT}
     </update>
@@ -86,6 +116,36 @@
             </if>
             <if test="downTime != null">
                 DOWN_TIME = #{downTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DATA_DEVICE_ID = #{deviceId,jdbcType=VARCHAR} and YEAR = #{year,jdbcType=VARCHAR} and MONTH = #{month,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateTimeOEE" parameterType="com.tjpu.iot.pojo.Data">
+        update device_data
+        <set>
+            <if test="timeOEE != null">
+                TIME_OEE = #{timeOEE,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DATA_DEVICE_ID = #{deviceId,jdbcType=VARCHAR} and YEAR = #{year,jdbcType=VARCHAR} and MONTH = #{month,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updatePerformanceOEE" parameterType="com.tjpu.iot.pojo.Data">
+        update device_data
+        <set>
+            <if test="performanceOEE != null">
+                PERFORMANCE_OEE = #{performanceOEE,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DATA_DEVICE_ID = #{deviceId,jdbcType=VARCHAR} and YEAR = #{year,jdbcType=VARCHAR} and MONTH = #{month,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateGoodOEE" parameterType="com.tjpu.iot.pojo.Data">
+        update device_data
+        <set>
+            <if test="goodOEE != null">
+                GOOD_OEE = #{goodOEE,jdbcType=VARCHAR},
             </if>
         </set>
         where DATA_DEVICE_ID = #{deviceId,jdbcType=VARCHAR} and YEAR = #{year,jdbcType=VARCHAR} and MONTH = #{month,jdbcType=VARCHAR}
